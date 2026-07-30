@@ -10,6 +10,16 @@ StadiumSenseAI/
 └── server/    Express + MongoDB API and Socket.IO server
 ```
 ```
+Setting	Value
+Project Name	stadiumsenseai
+Framework Preset	Vite (not Other)
+Root Directory	client
+Build Command	npm run build
+Output Directory	dist
+Install Command	npm install
+```
+
+```
 Camera
 
 ↓
