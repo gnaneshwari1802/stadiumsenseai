@@ -1,166 +1,39 @@
-import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  LinearProgress,
-  Box,
-} from "@mui/material";
-
-import GroupsIcon from "@mui/icons-material/Groups";
-import LocalParkingIcon from "@mui/icons-material/LocalParking";
-import ThermostatIcon from "@mui/icons-material/Thermostat";
-import SecurityIcon from "@mui/icons-material/Security";
-
+import { Box, Card, CardContent, Grid, LinearProgress, Stack, Typography } from "@mui/material";
+import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
+import LocalParkingRoundedIcon from "@mui/icons-material/LocalParkingRounded";
+import ThermostatRoundedIcon from "@mui/icons-material/ThermostatRounded";
+import SecurityRoundedIcon from "@mui/icons-material/SecurityRounded";
 import { motion } from "framer-motion";
 
 const MotionCard = motion.create(Card);
 
-function DashboardCards({
-  dashboard = {},
-}) {
-  const crowdDensity = dashboard?.crowdDensity ?? 0;
-  const parkingOccupied = dashboard?.parkingOccupied ?? 0;
-  const totalParking = dashboard?.parkingCapacity ?? 200;
-  const temperature = dashboard?.temperature ?? 0;
-  const securityAlerts = dashboard?.securityAlerts ?? 0;
-  const updateLabel = dashboard?.dataSource === "telemetry"
-    ? "Live telemetry"
-    : dashboard?.dataSource === "demo"
-      ? "Demo data"
-      : "Waiting for telemetry";
-
+function DashboardCards({ dashboard = {} }) {
+  const parkingCapacity = dashboard.parkingCapacity || 200;
   const cards = [
-    {
-      title: "Crowd Density",
-      value: `${crowdDensity}%`,
-      progress: crowdDensity,
-      color: "#2196f3",
-      icon: <GroupsIcon sx={{ fontSize: 45 }} />,
-    },
-    {
-      title: "Parking",
-      value: `${parkingOccupied}/${totalParking}`,
-      progress: (parkingOccupied / totalParking) * 100,
-      color: "#43a047",
-      icon: <LocalParkingIcon sx={{ fontSize: 45 }} />,
-    },
-    {
-      title: "Temperature",
-      value: `${temperature}°C`,
-      progress: Math.min(temperature * 2.5, 100),
-      color: "#fb8c00",
-      icon: <ThermostatIcon sx={{ fontSize: 45 }} />,
-    },
-    {
-      title: "Security Alerts",
-      value: securityAlerts,
-      progress: Math.min(securityAlerts * 20, 100),
-      color: "#e53935",
-      icon: <SecurityIcon sx={{ fontSize: 45 }} />,
-    },
+    { label: "Crowd density", value: `${dashboard.crowdDensity ?? 0}%`, detail: dashboard.crowdLevel || "Monitoring", progress: dashboard.crowdDensity ?? 0, color: "#6366f1", icon: <GroupsRoundedIcon /> },
+    { label: "Parking occupied", value: `${dashboard.parkingOccupied ?? 0}/${parkingCapacity}`, detail: `${dashboard.parkingAvailable ?? parkingCapacity} spaces available`, progress: ((dashboard.parkingOccupied ?? 0) / parkingCapacity) * 100, color: "#10b981", icon: <LocalParkingRoundedIcon /> },
+    { label: "Temperature", value: `${dashboard.temperature ?? 0}°C`, detail: dashboard.weather || "Loading weather", progress: Math.min((dashboard.temperature ?? 0) * 2.5, 100), color: "#f59e0b", icon: <ThermostatRoundedIcon /> },
+    { label: "Security alerts", value: dashboard.securityAlerts ?? 0, detail: (dashboard.securityAlerts ?? 0) ? "Needs attention" : "All clear", progress: Math.min((dashboard.securityAlerts ?? 0) * 20, 100), color: "#ef4444", icon: <SecurityRoundedIcon /> },
   ];
 
-  return (
-    <Grid container spacing={3}>
-      {cards.map((card, index) => (
-        <Grid
-          key={index}
-          size={{
-            xs: 12,
-            sm: 6,
-            lg: 3,
-          }}
-        >
-          <MotionCard
-            whileHover={{
-              scale: 1.04,
-              y: -6,
-            }}
-            transition={{
-              duration: 0.25,
-            }}
-            elevation={8}
-            sx={{
-              borderRadius: 4,
-              background:
-                "linear-gradient(135deg,#1e293b,#334155)",
-              color: "white",
-              overflow: "hidden",
-              height: "100%",
-            }}
-          >
-            <CardContent>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Box>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{
-                      color: "#cbd5e1",
-                    }}
-                  >
-                    {card.title}
-                  </Typography>
-
-                  <Typography
-                    variant="h4"
-                    fontWeight="bold"
-                    sx={{
-                      mt: 1,
-                    }}
-                  >
-                    {card.value}
-                  </Typography>
-                </Box>
-
-                <Box
-                  sx={{
-                    color: card.color,
-                    opacity: 0.95,
-                  }}
-                >
-                  {card.icon}
-                </Box>
-              </Box>
-
-              <LinearProgress
-                variant="determinate"
-                value={card.progress}
-                sx={{
-                  mt: 3,
-                  height: 10,
-                  borderRadius: 10,
-                  backgroundColor: "#475569",
-
-                  "& .MuiLinearProgress-bar": {
-                    backgroundColor: card.color,
-                    borderRadius: 10,
-                  },
-                }}
-              />
-
-              <Typography
-                variant="caption"
-                sx={{
-                  color: "#94a3b8",
-                  mt: 1,
-                  display: "block",
-                }}
-              >
-                {updateLabel}
-              </Typography>
-            </CardContent>
-          </MotionCard>
-        </Grid>
-      ))}
-    </Grid>
-  );
+  return <Grid container spacing={2.25}>
+    {cards.map((card, index) => <Grid key={card.label} size={{ xs: 12, sm: 6, lg: 3 }}>
+      <MotionCard initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.07 }} whileHover={{ y: -4 }}
+        sx={{ height: "100%", borderRadius: 4, border: "1px solid", borderColor: "divider", boxShadow: "0 8px 24px rgba(15,23,42,0.07)" }}>
+        <CardContent sx={{ p: 2.25, "&:last-child": { pb: 2.25 } }}>
+          <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+            <Box>
+              <Typography variant="body2" color="text.secondary" fontWeight={600}>{card.label}</Typography>
+              <Typography variant="h4" fontWeight={800} sx={{ mt: 0.5, letterSpacing: "-0.04em" }}>{card.value}</Typography>
+            </Box>
+            <Box sx={{ color: card.color, bgcolor: `${card.color}1a`, width: 44, height: 44, display: "grid", placeItems: "center", borderRadius: 3 }}>{card.icon}</Box>
+          </Stack>
+          <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 2 }}>{card.detail}</Typography>
+          <LinearProgress variant="determinate" value={card.progress} sx={{ mt: 1, height: 6, borderRadius: 10, bgcolor: `${card.color}1a`, "& .MuiLinearProgress-bar": { bgcolor: card.color, borderRadius: 10 } }} />
+        </CardContent>
+      </MotionCard>
+    </Grid>)}
+  </Grid>;
 }
 
 export default DashboardCards;
