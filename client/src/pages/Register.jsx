@@ -86,11 +86,12 @@ catch(err){
 
     console.log(
         "REGISTER ERROR:",
-        err.response?.data
+        err.response?.data || err.message
     );
 
     setMessage(
         err.response?.data?.message ||
+        err.message ||
         "Registration Failed"
     );
 
