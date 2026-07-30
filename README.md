@@ -9,7 +9,46 @@ StadiumSenseAI/
 ├── client/    React + Vite dashboard
 └── server/    Express + MongoDB API and Socket.IO server
 ```
+```
+Sensors
+↓
 
+Node API
+
+↓
+
+MongoDB
+
+↓
+
+Socket.IO
+
+↓
+
+React Dashboard
+
+↓
+
+Gemini AI
+```
+```
+Camera
+        \
+Parking Sensor ----\
+Weather API -------\
+                    \
+                 Node Backend
+                      |
+                 MongoDB Atlas
+                      |
+                 Socket.IO
+                      |
+             React Dashboard
+                      |
+                 Gemini AI
+                      |
+             Stadium Admin
+```
 ## Requirements
 
 - Node.js 18 or newer
