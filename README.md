@@ -10,6 +10,71 @@ StadiumSenseAI/
 └── server/    Express + MongoDB API and Socket.IO server
 ```
 ```
+Camera
+
+↓
+
+YOLO
+
+↓
+
+People Count
+
+↓
+
+Crowd Density
+
+↓
+
+MongoDB
+
+↓
+
+Socket.IO
+
+↓
+
+Dashboard
+```
+```
+✅ Gemini API
+
+✅ OpenWeather API
+
+✅ MongoDB
+
+✅ Socket.IO
+
+✅ JWT
+
+✅ React
+
+✅ Express
+```
+```
+OpenWeather API
+        │
+        ▼
+ Weather Service
+        │
+
+Scheduler (1 second)
+        │
+        ├── Crowd Simulator
+        ├── Parking Simulator
+        ├── Notification Engine
+        ├── Activity Logger
+        ├── Prediction Service
+        ▼
+     MongoDB
+        ▼
+    Socket.IO
+        ▼
+React Dashboard
+        ▼
+Gemini AI Assistant
+```
+```
 Sensors
 ↓
 
