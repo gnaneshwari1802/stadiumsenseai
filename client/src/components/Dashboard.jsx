@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Box, Chip, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Grid, Stack, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import socket, { connectSocket } from "../services/socket";
 import { getDashboard } from "../services/dashboardApi";
 import ActivityFeed from "./ActivityFeed";
@@ -32,6 +33,7 @@ const initialDashboard = {
 };
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [dashboard, setDashboard] = useState(initialDashboard);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [socketConnected, setSocketConnected] = useState(socket.connected);
@@ -85,6 +87,16 @@ function Dashboard() {
               color={dashboard.dataSource === "telemetry" && socketConnected ? "success" : "default"}
               label={dashboard.dataSource === "telemetry" ? (socketConnected ? "Live telemetry" : "Reconnecting") : dashboard.dataSource === "demo" ? "Demo data" : "Waiting for telemetry"}
             />
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => {
+                localStorage.removeItem("token");
+                navigate("/login", { replace: true });
+              }}
+            >
+              Logout
+            </Button>
           </Stack>
           <Stack direction="row" spacing={1.5} justifyContent={{ xs: "flex-start", sm: "flex-end" }} alignItems="center" flexWrap="wrap" useFlexGap>
             <Typography fontWeight="bold">{currentTime.toLocaleDateString()}</Typography>
