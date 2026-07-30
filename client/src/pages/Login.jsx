@@ -10,6 +10,9 @@ import {
   Typography,
   Alert
 } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 import {
   loginUser
@@ -20,7 +23,7 @@ import {
 } from "react-router-dom";
 
 
-function Login() {
+function Login({ mode, toggleTheme }) {
 
   const navigate = useNavigate();
 
@@ -97,6 +100,13 @@ function Login() {
 
 
   return (
+
+    <>
+    <Tooltip title={mode === "light" ? "Switch to dark theme" : "Switch to light theme"}>
+      <IconButton onClick={toggleTheme} sx={{ position: "fixed", top: 16, right: 16 }} color="primary" aria-label="Toggle color theme">
+        {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+      </IconButton>
+    </Tooltip>
 
     <Card
       sx={{
@@ -225,6 +235,7 @@ function Login() {
 
 
     </Card>
+    </>
 
   );
 

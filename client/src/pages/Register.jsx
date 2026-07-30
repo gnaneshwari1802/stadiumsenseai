@@ -19,6 +19,9 @@ Button,
 Alert
 
 } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 import {
 
@@ -32,7 +35,7 @@ useNavigate
 
 } from "react-router-dom";
 
-function Register(){
+function Register({ mode, toggleTheme }){
 
 const navigate=
 
@@ -100,6 +103,13 @@ catch(err){
 };
 
 return(
+
+<>
+<Tooltip title={mode === "light" ? "Switch to dark theme" : "Switch to light theme"}>
+  <IconButton onClick={toggleTheme} sx={{ position: "fixed", top: 16, right: 16 }} color="primary" aria-label="Toggle color theme">
+    {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+  </IconButton>
+</Tooltip>
 
 <Container maxWidth="sm">
 
@@ -214,6 +224,8 @@ Create Account
 </Paper>
 
 </Container>
+
+</>
 
 );
 

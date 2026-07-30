@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Chip, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Grid, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 import socket, { connectSocket } from "../services/socket";
 import { getDashboard } from "../services/dashboardApi";
 import ActivityFeed from "./ActivityFeed";
@@ -32,7 +34,7 @@ const initialDashboard = {
   lastTelemetryAt: null,
 };
 
-function Dashboard() {
+function Dashboard({ mode, toggleTheme }) {
   const navigate = useNavigate();
   const [dashboard, setDashboard] = useState(initialDashboard);
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -71,7 +73,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <Box sx={{ p: 3, minHeight: "100vh", bgcolor: "#f5f7fb" }}>
+    <Box sx={{ p: 3, minHeight: "100vh", bgcolor: "background.default" }}>
       <Stack
         direction={{ xs: "column", sm: "row" }}
         justifyContent="space-between"
@@ -97,6 +99,11 @@ function Dashboard() {
             >
               Logout
             </Button>
+            <Tooltip title={mode === "light" ? "Switch to dark theme" : "Switch to light theme"}>
+              <IconButton onClick={toggleTheme} color="primary" aria-label="Toggle color theme">
+                {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+              </IconButton>
+            </Tooltip>
           </Stack>
           <Stack direction="row" spacing={1.5} justifyContent={{ xs: "flex-start", sm: "flex-end" }} alignItems="center" flexWrap="wrap" useFlexGap>
             <Typography fontWeight="bold">{currentTime.toLocaleDateString()}</Typography>
